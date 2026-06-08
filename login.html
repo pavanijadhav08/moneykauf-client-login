@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moneykauf Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ===== BACKGROUND ===== */
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at center, rgba(80,60,180,0.25), transparent 60%),
+                linear-gradient(135deg, #0f0c29, #1a1446, #0a0f2c);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+/* ===== MAIN CARD ===== */
+.container {
+    width: 100%;
+    max-width: 950px;   /* slightly smaller */
+    min-height: 520px;  /* flexible height */
+    display: flex;
+    border-radius: 22px;
+    overflow: hidden;
+    background: rgba(20, 20, 45, 0.85);
+    box-shadow: 
+        0 20px 60px rgba(0,0,0,0.7),
+        0 0 40px rgba(100, 80, 255, 0.15);
+    backdrop-filter: blur(20px);
+    transition: 0.3s ease;
+}
+
+/* ===== LEFT IMAGE ===== */
+.left {
+    flex: 1;
+    position: relative;
+    background: url('img.png') center/cover no-repeat;
+}
+
+/* overlay gradient */
+.left::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 60%, rgba(10,10,30,0.9));
+}
+
+/* ===== RIGHT FORM ===== */
+.right {
+    flex: 1;
+    background: rgba(15, 15, 35, 0.95);
+    padding: 25px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* ===== FORM ELEMENTS (UNCHANGED STRUCTURE) ===== */
+h1 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.input-group {
+    margin-bottom: 10px;
+    position: relative; /* IMPORTANT */
+}
+
+input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    outline: none;
+    transition: 0.25s;
+}
+
+input::placeholder {
+    color: #aaa;
+}
+
+input:focus, select:focus {
+    border-color: #00ffcc;
+    box-shadow: 0 0 10px rgba(0,255,204,0.2);
+}
+
+/* password toggle */
+.eye {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+}
+
+/* forgot */
+.forgot {
+    text-align: right;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.forgot a {
+    color: #00ffcc;
+    text-decoration: none;
+}
+
+/* phone */
+.phone-group {
+    display: flex;
+    gap: 10px;
+}
+
+.phone-group select {
+    width: 40%;
+}
+
+.phone-group input {
+    width: 60%;
+}
+
+/* checkbox */
+.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    margin: 15px 0;
+}
+
+.checkbox input {
+    width: auto;
+    margin-right: 8px;
+}
+
+.checkbox a {
+    color: #00ffcc;
+    text-decoration: none;
+}
+
+/* button */
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #00ffcc, #00cc99);
+    color: black;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,255,204,0.35);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left {
+        height: 220px;
+    }
+
+    .left::after {
+        background: linear-gradient(to bottom, transparent 40%, rgba(10,10,30,0.9));
+    }
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+/* Fix dropdown option visibility */
+select option {
+    background-color: #1a1a2e;
+    color: white;
+}
+
+
+/* CUSTOM PHONE SELECT */
+/* PHONE BOX */
+.phone-box {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+}
+
+.phone-box .selected {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.08);
+}
+
+.phone-box img {
+    width: 20px;
+    height: 14px;
+}
+
+.phone-box input {
+    border: none;
+    background: transparent;
+    padding: 12px;
+    color: white;
+    width: 100%;
+    outline: none;
+}
+
+/* CURRENCY BOX */
+.currency-box {
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer;
+}
+
+/* Placeholder style (FIXED SIZE) */
+.placeholder {
+    color: #aaa;
+    font-size: 14px;
+}
+
+/* DROPDOWN FIX */
+.dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;          /* show below input */
+    left: 0;
+    width: 100%;
+    background: #1a1a2e;
+    border-radius: 10px;
+    margin-top: 6px;
+    overflow-y: auto;   /* allow scroll if needed */
+    max-height: 220px;  /* prevent cut */
+    z-index: 9999;      /* bring above everything */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+.dropdown.show {
+    display: block;
+}
+
+.dropdown div {
+    padding: 8px 10px;   /* smaller spacing */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;     /* 👈 reduce text size */
+}
+
+.dropdown img {
+    width: 18px;         /* slightly smaller flag */
+    height: 12px;
+}
+
+
+
+/* MODAL */
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+/* CARD */
+.modal-content {
+    width: 90%;
+    max-width: 520px;
+    background: #0f1226;
+    padding: 24px;
+    border-radius: 18px;
+    color: #e6e6e6;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+}
+
+/* TITLE */
+.modal-content h2 {
+    font-size: 20px;
+    font-weight: 500; /* less bold */
+    margin-bottom: 15px;
+}
+
+/* CONTENT */
+.modal-body {
+    max-height: 300px;
+    overflow-y: auto;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #cfcfcf;
+    padding-right: 10px;
+}
+
+/* SPACING BETWEEN POINTS */
+.modal-body p {
+    margin-bottom: 12px;
+}
+
+.modal-body strong {
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* SCROLLBAR (PROFESSIONAL) */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #00ffcc;
+    border-radius: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* FOOTER */
+.modal-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/* BUTTONS */
+.modal-footer button {
+    flex: 1;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.modal-footer button:first-child {
+    background: linear-gradient(90deg, #00ffcc, #00cc99);
+    color: black;
+}
+
+.modal-footer button:first-child:hover {
+    box-shadow: 0 0 15px rgba(0,255,204,0.4);
+}
+
+.modal-footer .cancel {
+    background: #3a3a3a;
+    color: white;
+}
+
+.step {
+    display: none;
+}
+
+
+
+#forgotSection h2 {
+    margin-bottom: 18px;
+}
+
+#forgotSection .input-group {
+    margin-bottom: 18px;
+}
+
+#forgotSection {
+    position: absolute;
+    inset: 0;              /* fills entire right panel */
+    display: none;
+}
+
+.forgot-container {
+    height: 100%;
+    width: 100%;              /* ADD THIS */
+    max-width: 500px;
+    margin: auto;             /* center horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: white;
+    font-size: 14px;
+    text-decoration: none;
+    z-index: 1000;
+}
+
+
+.otp-boxes {
+    display: flex;
+    gap: 8px;
+}
+
+.otp {
+    width: 40px;
+    height: 45px;
+    text-align: center;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: white;
+}
+
+#timer {
+    margin-bottom: 15px;  /* adds space before button */
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    
+    <!-- LEFT IMAGE -->
+    <div class="left"></div>
+
+    <!-- RIGHT FORM (UNCHANGED) -->
+    <div class="right">
+
+<div id="loginSection">
+
+        <h1>Welcome to Moneykauf!</h1>
+
+        <div class="input-group">
+            <input type="email" id="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Enter your password" required>
+            <span class="eye" onclick="togglePassword()">👁️</span>
+            <div class="forgot">
+                <a href="javascript:void(0)" onclick="openForgot()">Forgot Password?</a>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="name" placeholder="Enter your name" required>
+
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="surname" placeholder="Enter your surname" required>
+        </div>
+
+
+        <!-- PHONE INPUT -->
+<!-- PHONE -->
+<div class="input-group">
+  <div class="phone-box">
+    
+    <div class="selected" onclick="toggleDropdown('phoneDropdown')">
+      <img id="flagImg" src="https://flagcdn.com/w40/us.png">
+      <span id="codeText">+1</span>
+    </div>
+
+   <input type="tel" id="phone" placeholder="Enter your phone number" required>
+
+    <div class="dropdown" id="phoneDropdown">
+      <div onclick="selectPhone('us.png','+1')">
+        <img src="https://flagcdn.com/w40/us.png"> +1 USA
+      </div>
+      <div onclick="selectPhone('in.png','+91')">
+        <img src="https://flagcdn.com/w40/in.png"> +91 India
+      </div>
+      <div onclick="selectPhone('np.png','+977')">
+        <img src="https://flagcdn.com/w40/np.png"> +977 Nepal
+      </div>
+      <div onclick="selectPhone('lk.png','+94')">
+        <img src="https://flagcdn.com/w40/lk.png"> +94 Sri Lanka
+      </div>
+      <div onclick="selectPhone('ae.png','+971')">
+        <img src="https://flagcdn.com/w40/ae.png"> +971 UAE
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CURRENCY -->
+<div class="input-group">
+  <div class="currency-box" onclick="toggleDropdown('currencyDropdown')">
+   <span id="currencyText" class="placeholder" data-value="">Account currency (From)</span>
+  </div>
+
+  <div class="dropdown" id="currencyDropdown">
+   <div onclick="selectCurrency('INR (India)', 'currencyText')">INR (India)</div>
+    <div onclick="selectCurrency('NPR (Nepal)', 'currencyText')">NPR (Nepal)</div>
+    <div onclick="selectCurrency('LKR (Sri Lanka)', 'currencyText')">LKR (Sri Lanka)</div>
+    <div onclick="selectCurrency('AED (UAE)', 'currencyText')">AED (UAE)</div>
+    <div onclick="selectCurrency('USD (USA)', 'currencyText')">USD (USA)</div>
+  </div>
+</div>
+
+
+<div class="input-group">
+  <div class="currency-box" onclick="toggleDropdown('currencyDropdown2')">
+   <span id="currencyText2" class="placeholder" data-value="">Account currency (To)</span>
+  </div>
+
+  <div class="dropdown" id="currencyDropdown2">
+    <div onclick="selectCurrency('INR (India)', 'currencyText2')">INR (India)</div>
+    <div onclick="selectCurrency('NPR (Nepal)', 'currencyText2')">NPR (Nepal)</div>
+    <div onclick="selectCurrency('LKR (Sri Lanka)', 'currencyText2')">LKR (Sri Lanka)</div>
+    <div onclick="selectCurrency('AED (UAE)', 'currencyText2')">AED (UAE)</div>
+    <div onclick="selectCurrency('USD (USA)', 'currencyText2')">USD (USA)</div>
+  </div>
+</div>
+
+        <div class="checkbox">
+           <input type="checkbox" id="termsCheck" disabled>
+           <span>I agree to <a href="javascript:void(0)" onclick="openModal()">Terms & Risk Statements</a></span>
+        </div>
+
+      <button onclick="handleLogin()">Login</button>
+    </div>
+
+    <!-- FORGOT PASSWORD SECTION -->
+<div id="forgotSection" style="display:none;">
+
+  <!-- BACK BUTTON (TOP LEFT) -->
+    <a href="javascript:void(0)" onclick="backToLogin()" class="back-link">
+        ← Back to Login
+    </a>
+
+      <div class="forgot-container">
+
+           <div style="width:70%;">
+    <!-- STEP 1 -->
+  <div class="step" id="fpStep1" style="display:block;">
+        <h2>Forgot Password</h2>
+
+        <div class="input-group">
+            <input type="email" id="fpEmail" placeholder="Enter your email">
+        </div>
+
+        <button onclick="sendCode()">Send Code</button>
+    </div>
+
+    <!-- STEP 2 -->
+ <div class="step" id="fpStep2">
+    <h2>Email Verification</h2>
+
+    <div class="input-group">
+        <div class="otp-boxes">
+    <input type="text" maxlength="1" class="otp" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" class="otp" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" class="otp" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" class="otp" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" class="otp" inputmode="numeric" pattern="[0-9]*">
+    <input type="text" maxlength="1" class="otp" inputmode="numeric" pattern="[0-9]*">
+</div>
+    </div>
+
+    <div id="timer" style="font-size:12px; margin-top:8px; color:#aaa;">
+        Resend code in 30s
+    </div>
+
+    <!-- ✅ BUTTON OUTSIDE -->
+    <button onclick="verifyCode()">Verify Email</button>
+</div>
+
+    <!-- STEP 3 -->
+ <div class="step" id="fpStep3">
+    <h2>Reset Password</h2>
+
+   <div class="input-group">
+    <input type="password" id="newPass" placeholder="Enter new password">
+    <span class="eye" onclick="togglePass(this)">👁️</span>
+</div>
+
+<div class="input-group">
+    <input type="password" id="confirmPass" placeholder="Confirm password">
+    <span class="eye" onclick="togglePass(this)">👁️</span>
+</div>
+
+    <button onclick="changePassword()">Change Password</button>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<!-- TERMS MODAL -->
+<div id="termsModal" class="modal">
+  <div class="modal-content">
+    
+    <h2>Moneykauf Terms & Risk Statement</h2>
+
+    <div class="modal-body">
+      <p><strong>1. Acceptance of Terms</strong><br>
+      By accessing Moneykauf, you agree to comply with all applicable financial regulations and platform rules.</p>
+
+      <p><strong>2. Financial Risk Disclosure</strong><br>
+      Trading and financial activities involve significant risk. You may lose your invested capital. Moneykauf is not responsible for any financial losses.</p>
+
+      <p><strong>3. No Financial Advice</strong><br>
+      All information provided is for educational purposes only and does not constitute financial or investment advice.</p>
+
+      <p><strong>4. User Responsibility</strong><br>
+      You are responsible for maintaining the confidentiality of your account and ensuring accurate information.</p>
+
+      <p><strong>5. Compliance</strong><br>
+      You must comply with local laws and regulations related to financial transactions.</p>
+
+      <p><strong>6. Platform Usage</strong><br>
+      Any misuse, fraud, or illegal activity may result in account suspension.</p>
+
+      <p><strong>7. Data Privacy</strong><br>
+      Your data is handled securely but may be processed for compliance and security purposes.</p>
+    </div>
+
+    <div class="modal-footer">
+    <button type="button" onclick="acceptTerms()">I Agree</button>
+      <button onclick="closeModal()" class="cancel">Cancel</button>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<script>
+
+
+(function(){
+    emailjs.init("COvQ2wV49TtOEgiQd"); 
+})();
+
+let generatedOTP = "";
+
+function togglePassword() {
+    const password = document.getElementById("password");
+    password.type = password.type === "password" ? "text" : "password";
+}
+
+
+function toggleDropdown(id) {
+    document.getElementById(id).classList.toggle("show");
+}
+
+function selectPhone(flag, code) {
+    document.getElementById("flagImg").src = "https://flagcdn.com/w40/" + flag;
+    document.getElementById("codeText").innerText = code;
+    document.getElementById("phoneDropdown").classList.remove("show");
+}
+
+function selectCurrency(value, targetId) {
+    const el = document.getElementById(targetId);
+    el.innerText = value;
+    el.classList.remove("placeholder");
+    el.setAttribute("data-value", value);
+
+    // close all dropdowns
+    document.querySelectorAll(".dropdown").forEach(d => d.classList.remove("show"));
+}
+
+/* CLOSE DROPDOWN */
+window.onclick = function(e) {
+    if (!e.target.closest('.phone-box') && !e.target.closest('.currency-box')) {
+        document.querySelectorAll(".dropdown").forEach(d => d.classList.remove("show"));
+    }
+}
+
+
+
+let termsAccepted = false;
+
+/* OPEN MODAL */
+function openModal() {
+    document.getElementById("termsModal").style.display = "flex";
+}
+
+/* CLOSE MODAL */
+function closeModal() {
+    document.getElementById("termsModal").style.display = "none";
+}
+
+/* CLICK I AGREE */
+function acceptTerms() {
+    termsAccepted = true;
+
+    // enable checkbox and tick it
+    const checkbox = document.getElementById("termsCheck");
+    checkbox.disabled = false;
+    checkbox.checked = true;
+
+    // close popup
+    closeModal();
+}
+
+
+// ===== USER STORAGE SYSTEM =====
+
+// get all users
+function getUsers() {
+    return JSON.parse(localStorage.getItem("users")) || {};
+}
+
+// save users
+function saveUsers(users) {
+    localStorage.setItem("users", JSON.stringify(users));
+}
+
+/* LOGIN BUTTON */
+function handleLogin() {
+
+    const email = document.getElementById("email").value.trim().toLowerCase();
+    const password = document.getElementById("password").value.trim();
+    const name = document.getElementById("name").value.trim();
+    const surname = document.getElementById("surname").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const currency = document.getElementById("currencyText").getAttribute("data-value");
+
+    if (!email || !password || !name || !surname || !phone || !currency) {
+        alert("Please fill all required fields");
+        return;
+    }
+
+    if (!termsAccepted) {
+        alert("Please accept Terms & Risk Statements first");
+        return;
+    }
+
+    let users = getUsers();
+
+    // 🔹 FIRST LOGIN → CREATE ACCOUNT
+    if (!users[email]) {
+        users[email] = {
+            password: password,
+            name,
+            surname,
+            phone,
+            currency
+        };
+
+        saveUsers(users);
+
+        alert("Account created successfully ✅");
+        window.location.href = "dashboard.html";
+        return;
+    }
+
+    // 🔹 EXISTING USER → VERIFY PASSWORD
+    if (users[email].password === password) {
+        window.location.href = "dashboard.html";
+    } else {
+        alert("Invalid password ❌, go for Forgot Password");
+    }
+}
+
+
+function openForgot() {
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("forgotSection").style.display = "block";
+}
+
+/* STEP SWITCH */
+function showFP(stepId) {
+    document.querySelectorAll("#forgotSection .step").forEach(step => {
+        step.style.display = "none";
+    });
+
+    document.getElementById(stepId).style.display = "block";
+}
+
+/* STEP 1 */
+function sendCode() {
+    console.log("Button clicked");
+const email = document.getElementById("fpEmail").value.trim().toLowerCase();
+localStorage.setItem("resetEmail", email);
+
+    if (!email) {
+        alert("Please enter your email");
+        return;
+    }
+
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log("Generated OTP:", generatedOTP);
+
+    emailjs.send("service_8advj2v", "template_ab0lhq9", {
+        to_email: email,
+        otp: generatedOTP
+    })
+    .then(function() {
+        alert("Verification code sent");
+
+        // CLEAR OTP BOXES
+document.querySelectorAll(".otp").forEach(input => {
+    input.value = "";
+});
+
+        showFP("fpStep2");
+        setTimeout(initOTP, 100);
+        startTimer();
+    })
+    .catch(function(error) {
+        console.error("EmailJS Error:", error);
+        alert("Failed to send email");
+    });
+}
+
+/* STEP 2 */
+function verifyCode() {
+    let code = "";
+
+    document.querySelectorAll(".otp").forEach(input => {
+        code += input.value.trim();
+    });
+
+    if (code.length !== 6) {
+        alert("Enter complete OTP");
+        return;
+    }
+
+   if (code === generatedOTP) {
+    clearInterval(timerInterval); // ✅ STOP TIMER HERE
+
+    alert("Email verified");
+    showFP("fpStep3");
+
+} 
+
+else {
+    alert("Invalid OTP ❌");
+}
+}
+
+
+
+/* STEP 3 */
+function changePassword() {
+
+    const email = localStorage.getItem("resetEmail")?.toLowerCase();
+    const pass = document.getElementById("newPass").value.trim();
+    const confirm = document.getElementById("confirmPass").value.trim();
+
+    if (!email) {
+        alert("Session expired. Please try again.");
+        return;
+    }
+
+    if (!pass || !confirm) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    if (pass !== confirm) {
+        alert("Passwords do not match");
+        return;
+    }
+
+    let users = getUsers();
+
+    if (!users[email]) {
+        alert("User not found ❌");
+        return;
+    }
+
+    users[email].password = pass;
+    saveUsers(users);
+
+    alert("Password updated successfully ✅");
+
+    document.getElementById("forgotSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+
+
+    console.log("Reset Email:", email);
+console.log("Users:", users);
+}
+
+
+function backToLogin() {
+    document.getElementById("forgotSection").style.display = "none";
+    document.getElementById("loginSection").style.display = "block";
+}
+
+function initOTP() {
+    const inputs = document.querySelectorAll(".otp");
+
+    inputs.forEach((input, index) => {
+
+        // Allow only numbers
+        input.addEventListener("input", () => {
+            input.value = input.value.replace(/[^0-9]/g, '');
+
+            if (input.value && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        });
+
+        // Backspace move
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !input.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+}
+
+let timeLeft = 30;
+let timerInterval;
+
+function startTimer() {
+    timeLeft = 30;
+    const timer = document.getElementById("timer");
+
+    clearInterval(timerInterval); // prevent duplicate timers
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        timer.innerText = "Resend code in " + timeLeft + "s";
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+
+            // 🔥 AUTO RESEND NEW OTP
+            resendCode();
+        }
+    }, 1000);
+}
+
+function resendCode() {
+
+    const email = localStorage.getItem("resetEmail");
+
+    if (!email) {
+        alert("Session expired");
+        return;
+    }
+
+    // 🔥 GENERATE NEW OTP
+    generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+    console.log("New OTP:", generatedOTP);
+
+    // 🔥 SEND NEW EMAIL
+    emailjs.send("service_8advj2v", "template_ab0lhq9", {
+        to_email: email,
+        otp: generatedOTP
+    })
+    .then(function() {
+        alert("New OTP sent ✅");
+
+        // 🔹 CLEAR OLD INPUTS
+        document.querySelectorAll(".otp").forEach(input => {
+            input.value = "";
+        });
+
+        // 🔹 RESTART TIMER
+        startTimer();
+    })
+    .catch(function(error) {
+        console.error(error);
+        alert("Failed to resend OTP");
+    });
+}
+
+function togglePass(icon) {
+    const input = icon.previousElementSibling; // more accurate
+
+    if (!input) return;
+
+    input.type = input.type === "password" ? "text" : "password";
+}
+
+
+</script>
+
+</body>
+</html>
